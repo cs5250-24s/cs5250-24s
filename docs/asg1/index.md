@@ -105,6 +105,8 @@ Archive:  asg1.zip
     Your zip file shall have only one file ending with ".deb".
     If you have more than one file ending with ".deb", you will lose additional marks.
 
+Please submit your zip file to [Assignment 1 (Part A)](https://canvas.nus.edu.sg/courses/53045/assignments/100154) on Canvas.
+
 ## Part B (15 marks)
 
-Please refer to the relevant Quiz on Canvas for the questions.
+Please complete the quiz [Assignment 1 (Part B)](https://canvas.nus.edu.sg/courses/53045/quizzes/34349) on Canvas.
