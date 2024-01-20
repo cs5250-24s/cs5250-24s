@@ -1,1 +1,1 @@
-# cs5250-24s
+# CS5250 Assignments (2024 Spring)
