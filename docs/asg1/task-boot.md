@@ -1,7 +1,5 @@
 # Task 3: Experience the Boot Sequence
 
-You should work in the VM you created in Task 1.
-
 ## Installing QEMU
 
 QEMU is an open-source machine emulator that allows you to run virtual machines and emulate different architectures on your own system.
@@ -27,35 +25,33 @@ For more commands in this mode, please refer to the [manual](https://www.qemu.or
 
 ## Building SeaBIOS
 
-SeaBIOS is an open-source implementation of a 16-bit x86 BIOS.
+SeaBIOS is an open-source implementation of x86 BIOS.
 
 First, clone the SeaBIOS repository to get a copy of the source code.
 You can do this by executing the following command in your terminal:
 
-```bash
+```
 git clone https://git.seabios.org/seabios.git
 ```
 
 Navigate to the cloned repository and build SeaBIOS using the `make` command.
 
-```bash
+```
 cd seabios && make
 ```
 
 This will generate a file named `bios.bin` in the `out` directory.
 You can boot into SeaBIOS using the `bios.bin` file you just built. Run the following command:
 
-```bash
+```
 qemu-system-x86_64 -nographic -bios out/bios.bin
 ```
 
 Upon successful execution, the output should start with `SeaBIOS (version rel-1.16.3-xxxxx)`.
 This version should be later than the one you saw previously, indicating that you have successfully booted into the newly built SeaBIOS.
 
-!!! Question
-
-    Please modify the source code so that your Matric No. (AxxxxxxxY) is printed out below the SeaBIOS version.
-    Submit the `out/bios.bin` file.
+Please modify the source code so that your Matric No. (AxxxxxxxY) is printed out below the SeaBIOS version.
+Submit the `out/bios.bin` file.
 
 ## Building Linux Kernel
 
