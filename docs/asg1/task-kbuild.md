@@ -1,5 +1,10 @@
 # Task 2: Build and Install Linux Kernel
 
+!!! Warning
+
+    If you are using the course-provided server, kindly perform this task within your VM.
+    **At no point should you attempt to install the kernel built by yourself directly in the server.**
+
 ## Kernel Source Code
 
 To access the Linux kernel releases, visit the official website at <https://www.kernel.org>.
