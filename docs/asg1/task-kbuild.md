@@ -16,7 +16,7 @@ In this course, we will work with the latest stable release when the course begi
 You can find the repository for the mainline tree at
 <https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git>
 and the repository for the stable tree at
-<https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git>,
+<https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git>.
 
 To obtain a local copy of the code, we have two options:
 
@@ -95,9 +95,8 @@ git log -1
 1. **`make modules_install`**
 
    This command is used to install kernel modules.
-   It is an essential part of the kernel build process.
 
-1. **`make install`**
+2. **`make install`**
 
    This command is responsible for installing the newly built kernel.
    It's the final step in getting your custom kernel ready for use.
