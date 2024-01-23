@@ -125,6 +125,12 @@ If everything goes well, you should see the login prompt.
 After logging in, some messages (motd) will be printed out.
 The kernel release version, which should have changed to the new one, is reflected in the first line.
 
+!!! Info
+
+    It is expected that the new kernel will start up without any problems.
+    If something does go wrong, check the error messages and try to figure out what caused the issue.
+    You may ask your friends or the TA for help if you get stuck at this step.
+
 ## Customize the Kernel Build
 
 In this task, you will build a smaller kernel image that will successfully boot up on your virtual machine.
@@ -159,6 +165,13 @@ Please note:
 - Your goal is to reduce the size of the kernel image (`./arch/x86/boot/bzImage`) to less than 8 MiB.
   There's no need to shrink it excessively.
 - To ensure that the VM has successfully booted up, verify that the VM reaches the same login screen as your original kernel.
+
+!!! Info
+
+    When you attempt to boot with your new kernel after removing certain features, expect something strange to happen.
+    It's a good idea to document the changes you made to the kernel configuration.
+    This record will be handy in figuring out the cause of any issues that arise.
+    This part of the assignment is designed to prompt you to observe the effects of disabling specific features, understand their importance, and then work on fixing any resulting problems.
 
 For your submission, build your customized kernel into a DEB package using the following command:
 
