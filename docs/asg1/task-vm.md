@@ -36,11 +36,10 @@ However, if you cannot find solutions after you try all approaches you can think
     **You'll still be working with VirtualBox.**
 
     For some part of the assignments, working in a virtual machine under you control is necessary, even though the server is already installed with Ubuntu.
-    To do so, you should execute the following command
+    To do this, please download the latest version of VirtualBox and **the extension pack** from its [website](https://www.virtualbox.org/wiki/Downloads).
+    You may install the extension pack using the command documented [here](https://www.virtualbox.org/manual/ch08.html#vboxmanage-extpack).
 
-    ```
-    sudo apt install virtualbox virtualbox-ext-pack
-    ```
+    The version of VirtualBox in the Ubuntu repository might not be compatible with the OS running on the server.
 
 ## Download an ISO image of Linux Ubuntu
 
