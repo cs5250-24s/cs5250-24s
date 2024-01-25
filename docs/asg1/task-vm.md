@@ -81,6 +81,7 @@ The following instructions will presume the use of the server version.
 
     - The example provided in the manual is for Windows XP, but we intend to use Linux as the Guest OS.
       Adjust the `ostype` accordingly to match your requirements.
+      You may find the list of supported OS types using `VBoxManage list` command [(see here)](https://www.virtualbox.org/manual/ch08.html#vboxmanage-list).
     - When configuring your VM, choose an appropriate number of CPUs, memory size, and virtual hard disk size.
       We recommend setting it to 2 CPUs, 2 GB of memory, and 40 GB of disk space.
 
