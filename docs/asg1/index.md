@@ -50,6 +50,10 @@ Here are the expected outputs for different filenames:
 | `user`   | Prints the current username                                                        |
 | `kernel` | Prints the kernel release version of the current system (e.g., `6.7.0-14-generic`) |
 
+Here's an example of how the program should behave:
+
+[![asciicast](https://asciinema.org/a/b3OtOhNR595XeR1FYPIMP35O5.svg)](https://asciinema.org/a/b3OtOhNR595XeR1FYPIMP35O5)
+
 **Question 5 (8 marks):**
 Please submit the initramfs image `initramfs.cpio.gz` which can switch to the root filesystem.
 
