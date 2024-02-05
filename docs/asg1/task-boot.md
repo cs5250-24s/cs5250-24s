@@ -176,6 +176,12 @@ You can then boot into the root filesystem using the following command:
 qemu-system-x86_64 -nographic -kernel bzImage -initrd busybox.cpio.gz -append 'console=ttyS0' rootfs.img
 ```
 
+!!! info Hints
+
+    - The `rootfs.img` is equivalent to a hard disk in the virtual machine launched by QEMU.
+    - You will need to have "proc" and "devtmpfs" mounted in the init script.
+
+
 ### Create a User
 
 The root filesystem that we created does not have any users, which means you cannot log in to it.
