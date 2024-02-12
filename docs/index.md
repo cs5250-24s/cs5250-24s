@@ -6,7 +6,7 @@ Tentatively, we will follow the schedule below.
 |          Assignment           |     Release      |       Due        |
 | :---------------------------: | :--------------: | :--------------: |
 | [Assignment 1](asg1/index.md) | Mon, 22 Jan 2024 | Mon, 12 Feb 2024 |
-|         Assignment 2          | Mon, 12 Feb 2024 | Mon, 4 Mar 2024  |
+| [Assignment 2](asg2/index.md) | Mon, 12 Feb 2024 | Mon, 4 Mar 2024  |
 |         Assignment 3          | Mon, 4 Mar 2024  | Mon, 25 Mar 2024 |
 |         Assignment 4          | Mon, 25 Mar 2024 | Mon, 15 Apr 2024 |
 

@@ -2,6 +2,7 @@ site_name: CS5250 Assignments (2024 Spring)
 theme:
   name: material
   features:
+    - content.code.copy
     - content.code.select
     - navigation.indexes
     - navigation.sections
@@ -35,3 +36,8 @@ nav:
       - asg1/task-vm.md
       - asg1/task-kbuild.md
       - asg1/task-boot.md
+  - Assignment 2:
+      - asg2/index.md
+      - asg2/task-module.md
+      - asg2/task-syscall.md
+      - asg2/task-gdb.md
