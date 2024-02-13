@@ -21,9 +21,9 @@
       These settings are necessary for the proper functioning of VirtualBox guest
       additions, including shared folders support.
 
-    You are permitted to enable other features as per your project requirements.
-    However, retain a copy of your kernel configuration file, as you will need to
-    submit it along with your project.
+    Feel free to enable additional features as needed.
+    However, please make sure to save a copy of your kernel configuration and
+    include it in the zip file you submit.
 
 ### [Task 1: Developing a Kernel Module](task-module.md)
 
@@ -127,14 +127,15 @@ All the values are placeholders and should be replaced with your responses.
 
 Your submission should be a zip file containing the following files:
 
-| Filename    | Description                                                                      |
-| ----------- | -------------------------------------------------------------------------------- |
-| `saq.json`  | Your response to Question 1, 7, 8, and 9 in JSON format. Use the template above. |
-| `qn2.md`    | Your response to Question 2, formatted in Markdown.                              |
-| `qn3.md`    | Your response to Question 3, formatted in Markdown.                              |
-| `modcpid.c` | The source code of your kernel module.                                           |
-| `*.patch`   | The patch file including your implementation of the syscall `getcpid`.           |
-| `getcpid.c` | A C program that prints the PIDs of all children of a given process.             |
+| Filename    | Description                                                                                            |
+| ----------- | ------------------------------------------------------------------------------------------------------ |
+| `saq.json`  | Your response to Question 1, 7, 8, and 9 in JSON format. Use the template above.                       |
+| `qn2.md`    | Your response to Question 2, formatted in Markdown.                                                    |
+| `qn3.md`    | Your response to Question 3, formatted in Markdown.                                                    |
+| `modcpid.c` | The source code of your kernel module.                                                                 |
+| `*.patch`   | The patch file including your implementation of the syscall `getcpid`.                                 |
+| `getcpid.c` | A C program that prints the PIDs of all children of a given process.                                   |
+| `.config`   | (Optional) Kernel configuration, if you have enabled additional features beyond those specified above. |
 
 You can verify the contents of your zip file using the `unzip -l` command.
 Please note that the files listed above are for illustrative purposes only.
@@ -160,8 +161,12 @@ Archive:  asg2.zip
     Your zip file shall have only one file ending with ".patch".
     If you have more than one file ending with ".patch", you will lose additional marks.
 
-Please submit your zip file to [Assignment 2 (Part A)](https://canvas.nus.edu.sg/courses/53045/assignments/105001) on Canvas.
+Please submit your zip file to
+[Assignment 2 (Part A)](https://canvas.nus.edu.sg/courses/53045/assignments/105001)
+on Canvas.
 
 ## Part B (15 marks)
 
-Please complete the quiz [Assignment 2 (Part B)](https://canvas.nus.edu.sg/courses/53045/quizzes/35637) on Canvas.
+Please complete the quiz
+[Assignment 2 (Part B)](https://canvas.nus.edu.sg/courses/53045/quizzes/35637)
+on Canvas.
