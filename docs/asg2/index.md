@@ -7,6 +7,9 @@
     The assignment is due **17:59 on 4 Mar 2024**.
     Late submissions will lose **1 mark per hour**.
 
+    If you discover any errors or need any clarification or have any question,
+    please create an issue [here](https://github.com/nus-cs5250/24s/issues).
+
 ## Part A (35 marks)
 
 !!! info
