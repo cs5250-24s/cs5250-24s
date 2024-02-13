@@ -160,7 +160,8 @@ Archive:  asg2.zip
     Your zip file shall have only one file ending with ".patch".
     If you have more than one file ending with ".patch", you will lose additional marks.
 
+Please submit your zip file to [Assignment 2 (Part A)](https://canvas.nus.edu.sg/courses/53045/assignments/105001) on Canvas.
+
 ## Part B (15 marks)
 
-Please refer to the relevant Quiz on Canvas for the questions.
-(Not released yet)
+Please complete the quiz [Assignment 2 (Part B)](https://canvas.nus.edu.sg/courses/53045/quizzes/35637) on Canvas.
