@@ -76,8 +76,8 @@ This command displays the current values of all registers.
 To examine the first 8 values on the stack in hexadecimal format, use the
 `x/8xg $rsp` command.
 This command uses the `x` command to examine memory and prints 8 quadwords (`g`
-stands for giant/quadword) from the location pointed to by the stack pointer
-(`rsp`).
+stands for giant/quadword) in hexadecimal format from the location pointed to by
+the stack pointer (`rsp`).
 
 ```
 (gdb) x/8xg $rsp
