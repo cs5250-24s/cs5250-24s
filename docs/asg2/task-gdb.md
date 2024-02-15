@@ -101,8 +101,8 @@ what are they.
 For help with format specifiers, check the GDB manual's section on
 [Examining Memory](https://sourceware.org/gdb/current/onlinedocs/gdb.html/Memory.html).
 
-Finally, check the ABI documentation to find the diagram that supports your
-observations.
+Finally, check the ABI documentation to find the figure or table that supports
+your observations.
 
 ## Attach GDB to Kernel via QEMU
 
