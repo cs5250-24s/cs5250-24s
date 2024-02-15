@@ -39,8 +39,7 @@ int main() {
 
 Compile the program using the command below.
 This command compiles your program with debug information, which is crucial for
-debugging, and disables optimizations to make the debugging process more
-straightforward.
+debugging.
 Run the compiled program using GDB with the command:
 
 ```
