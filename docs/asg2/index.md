@@ -4,7 +4,7 @@
 
     Please read the [general instructions](../index.md) first.
 
-    The assignment is due **17:59 on 4 Mar 2024**.
+    The assignment is due **17:59 on 11 Mar 2024**.
     Late submissions will lose **1 mark per hour**.
 
     If you discover any errors or need any clarification or have any question,
