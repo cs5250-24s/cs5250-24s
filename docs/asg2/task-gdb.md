@@ -115,21 +115,25 @@ your observations.
     in the character backend multiplexer,
     you can refer to the QEMU documentation.
 
-Launch QEMU with the command below to start your Linux kernel.
-This command sets up QEMU to wait for a debugger connection.
-KASLR is disabled to simplify debugging.
+Use the following command to start Linux kernel in QEMU.
+The `-s` option configures QEMU to listen for a GDB connection on port 1234.
+The `-S` option pauses the CPU at startup, providing an opportunity to connect
+with GDB prior to the kernel's execution.
+Additionally, KASLR is disabled to simplify the debugging process.
 
 ```
-qemu-system-x86_64 -s -S -nographic -kernel bzImage -append 'console=ttyS0 nokaslr'
+qemu-system-x86_64 -s -S -nographic -kernel ./arch/x86/boot/bzImage -append 'console=ttyS0 nokaslr'
 ```
 
-Next, open GDB to connect to the running QEMU instance by using the command:
+Next, open a new terminal and start GDB.
+Use the `vmlinux` file located in the root directory of the kernel source code.
+This file is an uncompressed kernel image that includes debugging information.
 
 ```
 gdb vmlinux
 ```
 
-Inside GDB, connect to QEMU with:
+Inside GDB, connect to the GDB server in the active QEMU instance using:
 
 ```
 (gdb) target remote localhost:1234
