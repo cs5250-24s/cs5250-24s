@@ -115,7 +115,7 @@ Please write your response in a Markdown file.
 ### Submission Guidelines
 
 Here's the template for your YAML file `saq.yaml`, including your responses to
-Questions 1 and 3.
+Questions 1, 2 and 4.
 All the values are placeholders and should be replaced with your responses.
 
 ```YAML
