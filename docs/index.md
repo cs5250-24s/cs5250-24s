@@ -7,7 +7,7 @@ Tentatively, we will follow the schedule below.
 | :---------------------------: | :--------------: | :--------------: |
 | [Assignment 1](asg1/index.md) | Mon, 22 Jan 2024 | Mon, 12 Feb 2024 |
 | [Assignment 2](asg2/index.md) | Mon, 12 Feb 2024 | Mon, 11 Mar 2024 |
-|         Assignment 3          | Mon, 11 Mar 2024 | Mon, 1 Apr 2024  |
+| [Assignment 3](asg3/index.md) | Mon, 11 Mar 2024 | Mon, 1 Apr 2024  |
 |         Assignment 4          | Mon, 1 Apr 2024  | Mon, 22 Apr 2024 |
 
 The maximum score for an assignment is 50 marks.
