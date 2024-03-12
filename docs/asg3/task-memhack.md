@@ -13,6 +13,9 @@ of the score and update it to a large number.
 
 ## Memory Regions
 
+In order to modify the score, we need to find the address of the score in the
+`tetris` process.
+
 The memory regions mapped to a process can be found in `/proc/[pid]/maps`. For
 instance, to view the memory regions of the `bash` process:
 
@@ -43,75 +46,75 @@ Run the `tetris` game and pause it. Find its process ID using the `ps` or
 
 ## Find the Address of the Score
 
-We can find the specific address of the score by searching the memory regions of
-the `tetris` process for the value of the score.
+Merely identifying suspicious memory regions isn't sufficient; pinpointing the
+exact address of the score in the `tetris` process is necessary.
+To find the exact address of the score in the `tetris` process, we can play the
+game briefly, pause it, and then search through these regions for the score
+value.
+If a word in a memory region matches the score value, it's likely where the
+score is stored.
+This involves digging into the `tetris` process's virtual memory to gather the
+necessary information.
 
-Under procfs, there's another file `/proc/[pid]/mem` that allows you to read and
+Under procfs, there's a file `/proc/[pid]/mem` that allows you to read and
 write to the virtual memory of a process. Please refer to the man page of
 [`proc`](https://man7.org/linux/man-pages/man5/proc.5.html) and read the section
 about `/proc/[pid]/mem`.
 
 !!! tip
 
-    No need to worry about permission issues in this task. You can use
-    `sudo` to read and write to `/proc/[pid]/mem`.
+    No need to worry about permission issues in this task.
+    You can use `sudo` to read and write to `/proc/[pid]/mem`.
 
-You can play the game for a while and then pause it. Then search through the
-memory regions (just look at the memory regions that you found suspicious in the
-previous question) and find a word that has the same value as the score. If
-there are multiple words with the same value, you can continue playing the game
-and pause it again to see how these words change.
+Here's a demo to help you understand how to hack into the virtual memory of a
+process via `/proc/[pid]/mem`.
 
-Please write a program to find the address of the score in the `tetris` process.
-You can use **C or Python** to write the program.
+<script src="https://gist.github.com/shen-jiamin/62e554df61510efe7095ad8335e1346b.js?file=demo-hacker.c"></script>
 
-The program accepts a single command-line argument, which is the process ID of
-the `tetris` process. It first prints the process ID to stdout. Then, it reads
-the `maps` file of the `tetris` process to identify the range of memory
-addresses where the score might be stored. Next, it reads the value of the score
-to search from stdin and examines the memory regions of interest for this value.
-If there are multiple suspicious memory locations, it prompts for a new score
-and repeats the process, ruling out memory locations that do not match the
-expected value. This continues until the program identifies the sole memory
-location consistently holding the score value. Finally, it prints the address of
-the score to **both** stdout and stderr.
+<script async id="asciicast-viIoLKiGb0HKNsIlErYFtiYFC" src="https://asciinema.org/a/viIoLKiGb0HKNsIlErYFtiYFC.js"></script>
 
-Please note:
+Please write a program in **C or Python** to locate the address of the score in
+the `tetris` process. The program should accept a single command-line argument,
+which is the process ID of the `tetris` process.
 
-- Your program should print and only print 2 lines to stdout: the process ID and
-  the address of the score. All other outputs, should go to stderr.
-  - Process ID shall be printed as a decimal number followed by a newline.
-  - The address of the score shall be printed as a hexadecimal number prefixed
-    with `0x` followed by a newline.
-- If the process ID is invalid or it fails to find the address of the score,
-  your program should print an error message to stderr and exit with a non-zero
-  exit code.
-- If you use Python, the first line of your program MUST be `#!/usr/bin/env python3`.
+The program should first read the `maps` file of the `tetris` process to
+determine the potential memory ranges where the score might be stored. Then, it
+should read the score value from stdin and scan through the identified memory
+regions to locate the score value. If it finds a memory location holding the
+score value, it should print out the address of that memory location.
 
-!!! question
+It's possible that within these regions, there are multiple words containing the
+same value as the score. To eliminate false positives, you can continue playing
+the game and pause it again to observe how these words change. If you find
+memory locations that don't change as expected when the score updates, you can
+exclude them from consideration and finally find the actual address of the
+score.
 
-    Please submit the source code of the program in C or Python.
+## Hack the Score
 
-## Modify the Score
+Now that you have determined the address of the score, you can proceed to modify
+it to a larger number, such as 1000000.
 
-Now that you have found the address of the score, you can modify the score to a
-large number, e.g., 1000000.
+Please update your program as follows:
 
-Please write a **C program** to modify the score in the `tetris` process. The
-program accepts only one command-line argument: the new score. It should read
-the process ID and the address of the score from stdin. Then it modifies the
-score to the new score. If the modification is successful, it exits with a zero
-exit code. Otherwise, it exits with a non-zero exit code.
+1. Accept one additional command-line argument: the new score.
+2. Once the address of the score is found, write the new score to that memory
+   location.
 
-!!! question
-
-    Please submit the source code of the C program.
-
-Finally, you should be able to do the hacking using one command, similar to:
+Finally, you should be able to perform the hacking using a single command:
 
 ```console
-$ sudo ./find-score <pid> | sudo ./modify-score <new-score>
+$ sudo ./hack-tetris <pid> <target-score>
 ```
+
+!!! question
+
+    Please submit the source code of the program written in either C or Python.
+    If you choose Python, ensure that the first line of your program is `#!/usr/bin/env python3`.
+
+Please note: any compilation errors, syntax errors, or runtime errors will
+result in a score of 0 for this task.
+
 ## I'm So Scared!
 
 In this task, we demonstrated how a root user can read and write to the virtual

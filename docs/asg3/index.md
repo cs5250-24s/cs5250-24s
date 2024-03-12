@@ -76,9 +76,9 @@ Please submit your code in a file named `hook.c`.
 
 ### [Task 2: Memory Manipulation in Tetris Game](task-memhack.md)
 
-<!-- 4 + 5 + 3 + 3 = 15 -->
+<!-- 5 + 6 + 4 = 15 -->
 
-**Question 7 (4 marks):**
+**Question 7 (5 marks):**
 In which memory regions is it likely that the score is stored?
 
 1. Provide a complete copy of the output of `/proc/[pid]/maps` for the `tetris`
@@ -90,31 +90,25 @@ In which memory regions is it likely that the score is stored?
 
 Please write your response in a Markdown file.
 
-**Question 8 (5 marks):**
-Please submit the source code of the program that finds the address of the score
-in the `tetris` process. You can write the program in C or Python.
+**Question 8 (6 marks):**
+Please submit the source code of the C program that hacks the score in the
+`tetris` game.
 _Check the task description for the requirements of the program._
 
-Please submit your code in a file named `find-score.c` or `find-score.py`.
+Please submit your code in a file named `hack-tetris.c` or `hack-tetris.py`,
+depending on the language you choose.
 
-**Question 9 (3 marks):**
-Please submit the source code of the C program that modifies the score in the
-`tetris` process.
-_Check the task description for the requirements of the program._
-
-Please submit your code in a file named `modify-score.c`.
-
-**Question 10 (3 marks):**
+**Question 9 (4 marks):**
 Please discuss security concern with a LLM such as ChatGPT.
 Ask if there are any methods to prevent such unwanted actions.
 Evaluate the provided response for its effectiveness.
-If multiple solutions are suggested, choose only ONE of them to discuss.
+If multiple solutions are suggested, choose ONLY one of them to discuss.
 
 Please write your response in a Markdown file.
 
 ### Submission Guidelines
 
-Here's the template for your YAML file `saq.yaml`, including your responses to
+Here's the template for your YAML file `saq.yml`, including your responses to
 Questions 1, 2 and 4.
 All the values are placeholders and should be replaced with your responses.
 
@@ -127,17 +121,16 @@ qn4_gdb: "print ..."
 
 Your submission should be a zip file containing the following files:
 
-| Filename                          | Description                                                                                      |
-| --------------------------------- | ------------------------------------------------------------------------------------------------ |
-| `saq.yaml`                        | Your response to Question 1, 2 and 4, use the template above.                                    |
-| `qn3.md`                          | Your response to Question 3 in Markdown format.                                                  |
-| `qn5.md`                          | Your response to Question 5 in Markdown format.                                                  |
-| `hook.c`                          | Source code of the modified kernel module.                                                       |
-| `qn7.md`                          | Your response to Question 7 in Markdown format.                                                  |
-| `find-score.c` or `find-score.py` | Source code of the program searching for the address of score.                                   |
-| `modify-score.c`                  | Source code of the program modifying the score.                                                  |
-| `qn10.md`                         | Your response to Question 10 in Markdown format.                                                 |
-| `.config`                         | (Optional) Kernel configuration, if you have enabled additional features beyond those specified. |
+| Filename                            | Description                                                                                      |
+| ----------------------------------- | ------------------------------------------------------------------------------------------------ |
+| `saq.yml`                           | Your response to Question 1, 2 and 4, use the template above.                                    |
+| `qn3.md`                            | Your response to Question 3 in Markdown format.                                                  |
+| `qn5.md`                            | Your response to Question 5 in Markdown format.                                                  |
+| `hook.c`                            | Source code of the modified kernel module.                                                       |
+| `qn7.md`                            | Your response to Question 7 in Markdown format.                                                  |
+| `hack-tetris.c` or `hack-tetris.py` | Source code of the program hacking the score.                                                    |
+| `qn9.md`                            | Your response to Question 9 in Markdown format.                                                  |
+| `.config`                           | (Optional) Kernel configuration, if you have enabled additional features beyond those specified. |
 
 Please submit your zip file to
 [Assignment 3 (Part A)](https://canvas.nus.edu.sg/courses/53045/assignments/108790)
