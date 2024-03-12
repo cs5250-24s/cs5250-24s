@@ -83,6 +83,19 @@ should read the score value from stdin and scan through the identified memory
 regions to locate the score value. If it finds a memory location holding the
 score value, it should print out the address of that memory location.
 
+!!! tip
+
+    The actual pathname of the executed command in a process can be found by
+    reading the symbolic link `/proc/[pid]/exe`.
+
+    ```console
+    $ ls -al /proc/$$/exe
+    lrwxrwxrwx 1 shenjm shenjm 0 Mar 13 00:16 /proc/73799/exe -> /usr/bin/zsh*
+    ```
+
+    [Here](https://wiki.sei.cmu.edu/confluence/display/c/POS30-C.+Use+the+readlink%28%29+function+properly)
+    is an example of how to use the `readlink` function to read the symbolic link.
+
 It's possible that within these regions, there are multiple words containing the
 same value as the score. To eliminate false positives, you can continue playing
 the game and pause it again to observe how these words change. If you find
