@@ -101,7 +101,7 @@ call and print the arguments passed to it.
 
 <script src="https://gist.github.com/shen-jiamin/62e554df61510efe7095ad8335e1346b.js?file=hook.c"></script>
 
-Lines 16-18 of the code implement a simple filter, ensuring the probe triggers
+Lines 26-28 of the code implement a simple filter, ensuring the probe triggers
 only when the `current` process has a `comm` field matching the specified string
 argument `comm`. When loading the module, you must provide an appropriate value
 to the `comm` argument to ensure the probe triggers only when the intended
@@ -131,7 +131,7 @@ hook: --- [[ Module unloaded ]] ---
 
 !!! question
 
-    At line 23 of the kernel module, we have
+    At line 33 of the kernel module, we have
     `regs = (struct pt_regs *)regs->di`.
     Why do we need such an indirection to get the arguments of the system call?
 
