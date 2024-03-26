@@ -123,10 +123,17 @@ $ sudo ./hack-tetris <pid> <target-score>
 !!! question
 
     Please submit the source code of the program written in either C or Python.
-    If you choose Python, ensure that the first line of your program is `#!/usr/bin/env python3`.
+    If you choose Python, ensure that the first line of your program is
+    `#!/usr/bin/env python3`.
 
-Please note: any compilation errors, syntax errors, or runtime errors will
-result in a score of 0 for this task.
+!!! warning
+    Please note: any compilation errors, syntax errors, or runtime errors will
+    result in a score of 0 for this task.
+
+    You should probe the address of the score in your program interactively.
+    It's not allowed to hardcode the address of the score in your program.
+    A different victim program will be used to test your program, so the address
+    will be different from the one in this tetris game.
 
 ## I'm So Scared!
 
