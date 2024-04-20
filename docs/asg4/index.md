@@ -81,20 +81,29 @@ Please note the following instructions:
 3. Ensure that your code can be successfully built and that modules can be
    loaded into the kernel. Failure to build or load will result in a mark of 0.
 
-4. Coding style is important.
+4. Coding style matters.
 
-   - The repository contains a `.clang-format` file specifying formatting rules.
-     You can use the `clang-format` tool to automatically format your code.
-   - You're free to modify the `.clang-format` file as you wish.
-   - Your final submission must adhere to your specification. I'll use
-     `clang-format --dry-run --Werror` to check your code, including C source
-     code files and header files. Any complaints from `clang-format` will result
-     in a penalty of 1 mark per file.
+   - Inside the repository, there's a file named `.clang-format` which sets
+     rules for how your code should look.
+   - You can use a tool called `clang-format` to automatically format your code
+     according to these rules.
+   - Feel free to adjust the `.clang-format` file to your liking, but whatever
+     changes you make, your final submission needs to follow those rules that
+     you set.
+   - I'll run a check on your code using `clang-format --dry-run --Werror`. This
+     includes both C source code files and header files. If `clang-format` has
+     any complaints with your code, you'll lose 1 mark per file.
+   - It's recommended to use `clang-format` version 18, but you can also use
+     version 14, which comes with Ubuntu 22.04.
 
-5. Push only essential files to the repository. Do not push binaries, object
-   files, or any other generated files from the source code. Ensure proper usage
-   of `.gitignore` to exclude inappropriate files from being pushed to the
-   repository. Messy repositories will incur a one-time penalty of 2 marks.
+5. Only push essential files to the repository.
+
+   - Do not include binaries, object files, or any other generated files from
+     your source code.
+   - Make sure to properly utilize the `.gitignore` file to exclude
+     inappropriate files from being pushed to the repository.
+   - If your repository is messy or contains any unnecessary files, there will
+     be a one-time penalty of 2 marks.
 
 The repository contains the following files or directories:
 
