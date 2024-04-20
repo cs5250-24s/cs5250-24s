@@ -1,0 +1,1229 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../task-memhack/">
+      
+      
+        <link rel="next" href="../../asg4/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.18">
+    
+    
+      
+        <title>Optional: Understanding the Linux Scheduler - CS5250 Assignments (2024 Spring)</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.66ac8b77.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#optional-understanding-the-linux-scheduler" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="CS5250 Assignments (2024 Spring)" class="md-header__button md-logo" aria-label="CS5250 Assignments (2024 Spring)" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            CS5250 Assignments (2024 Spring)
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Optional: Understanding the Linux Scheduler
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../asg1/" class="md-tabs__link">
+          
+  
+    
+  
+  Assignment 1
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../asg2/" class="md-tabs__link">
+          
+  
+    
+  
+  Assignment 2
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+    
+  
+  Assignment 3
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../asg4/" class="md-tabs__link">
+          
+  
+    
+  
+  Assignment 4
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="CS5250 Assignments (2024 Spring)" class="md-nav__button md-logo" aria-label="CS5250 Assignments (2024 Spring)" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    CS5250 Assignments (2024 Spring)
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../asg1/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Assignment 1
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Assignment 1
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../asg1/task-vm/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Task 1: Setup a Virtual Machine
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../asg1/task-kbuild/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Task 2: Build and Install Linux Kernel
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../asg1/task-boot/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Task 3: Experience the Boot Sequence
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../asg2/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Assignment 2
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Assignment 2
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../asg2/task-module/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Task 1: Developing a Kernel Module
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../asg2/task-syscall/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Task 2: Creating a New System Call
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../asg2/task-gdb/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Task 3: Debugging with GDB
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Assignment 3
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Assignment 3
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../task-kprobe/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Task 1: Hook System Calls with KProbes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../task-memhack/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Task 2: Memory Manipulation in Tetris Game
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Optional: Understanding the Linux Scheduler
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Optional: Understanding the Linux Scheduler
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#code-browsing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Code Browsing
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#attaching-gdb-to-the-kernel" class="md-nav__link">
+    <span class="md-ellipsis">
+      Attaching GDB to the Kernel
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#drawing-a-call-graph" class="md-nav__link">
+    <span class="md-ellipsis">
+      Drawing a Call Graph
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#inspecting-the-fair-scheduler" class="md-nav__link">
+    <span class="md-ellipsis">
+      Inspecting the Fair Scheduler
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../asg4/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Assignment 4
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Assignment 4
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../asg4/task-cloudinit/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Task 0: Cloud-Init
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../asg4/task-chardev/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Task 1: Character Device Driver
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../asg4/task-pcidev/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Task 2: PCI Device
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../asg4/task-interrupt/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Task 3: Interrupt handler
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="optional-understanding-the-linux-scheduler">Optional: Understanding the Linux Scheduler</h1>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This task is for your self-exploration only.
+You are not required to submit any answers for this task.
+It is not graded and does not contribute to your final mark.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You will be working with Linux kernel version 6.7.0. Download the kernel
+configuration file from
+<a href="https://gist.githubusercontent.com/shen-jiamin/62e554df61510efe7095ad8335e1346b/raw/ac9f07ebfd05a1e24c68b810063844b379d1a37e/tiny.config">here</a>.
+Since this kernel is intended for use with QEMU only, support for VirtualBox
+shared folders, etc., is not required.</p>
+</div>
+<p>Ensure the downloaded configuration file is placed in the root directory of the
+kernel source tree and rename it to <code>.config</code>. Then proceed to build the kernel
+using the command <code>make -j$(nproc)</code>.</p>
+<p>After that, execute the following command to generate the <code>vmlinux-gdb.py</code> file:</p>
+<div class="language-text highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>make scripts_gdb
+</code></pre></div>
+<h2 id="code-browsing">Code Browsing</h2>
+<p>There are several tools available to assist you in navigating the kernel source
+code. You may find <a href="https://kernelnewbies.org/FAQ/CodeBrowsing">this page</a>
+helpful for an overview of these tools.</p>
+<p>For this task, I recommend using <code>clangd</code> in conjunction with <code>VSCode</code>. <code>clangd</code>
+offers the advantage of interpreting the kernel's build configuration, providing
+relatively accurate code navigation features. When combined with <code>VSCode</code>, you
+can easily navigate through the kernel source code. Additionally, code disabled
+by macros in the kernel configuration file will appear greyed out, allowing you
+to focus on the active part of the code.</p>
+<p>However, if you prefer using other editors or IDEs, you are free to do so. You
+can refer to <a href="https://clangd.llvm.org/installation">this page</a> for a list of
+other editors/IDEs compatible with <code>clangd</code>.</p>
+<p>Below is a brief guide to setting up <code>clangd</code> and <code>VSCode</code>. For more detailed
+instructions, you can search the web or ask ChatGPT for assistance:</p>
+<ol>
+<li>Build the kernel on your Linux machine as usual.</li>
+<li>Run <code>./scripts/clang-tools/gen_compile_commands.py</code> in the kernel source tree
+   to generate the <code>compile_commands.json</code> file.</li>
+<li>Install VSCode on your local machine.</li>
+<li>Install the "remote-ssh" extension in VSCode.</li>
+<li>Connect to the VM using the "remote-ssh" extension in VSCode.</li>
+<li>Install the "clangd" extension from the Extension marketplace in the VM.</li>
+<li>Use "open folder" to open the kernel source tree in VSCode.</li>
+<li>Open a C file within the kernel source tree. If <code>clangd</code> is not installed,
+   you will receive a prompt at the bottom-right corner of the window asking you
+   to install <code>clangd</code>. Click "Install" to proceed.</li>
+</ol>
+<p>Note: If you have the official "C/C++" extension installed, you may need to
+disable it to prevent conflicts with <code>clangd</code>.</p>
+<p>Once set up, you can open the file <code>kernel/sched/fair.c</code> at line 13073, where
+the object for the fair scheduling class is defined. You will notice that many
+fields are greyed out, indicating that they are disabled by macros in the kernel
+configuration file.</p>
+<p>In the object, you will see several functions wrapped between <code>#ifdef
+CONFIG_SMP</code> and <code>#endif</code>, which are disabled by the <code>CONFIG_SMP</code> macro.</p>
+<div class="admonition question">
+<p class="admonition-title">Question</p>
+<p>When <code>CONFIG_SMP</code> is disabled, what feature is lost?
+How does this simplification aid in analyzing the scheduler?</p>
+</div>
+<h2 id="attaching-gdb-to-the-kernel">Attaching GDB to the Kernel</h2>
+<p>You've already learned how to attach GDB to the kernel via QEMU in the <a href="../../asg2/task-gdb/">previous
+assignment</a>.</p>
+<p>Below is a Makefile to automate the process of attaching GDB to the kernel:</p>
+<div class="language-make highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nv">KERNEL_DIR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>../linux-6.7
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nv">bzImage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">$(</span>KERNEL_DIR<span class="k">)</span>/arch/x86/boot/bzImage
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="nv">vmlinux</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">$(</span>KERNEL_DIR<span class="k">)</span>/vmlinux
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="nf">qemu</span><span class="o">:</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">    </span>qemu-system-x86_64<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">        </span>-s<span class="w"> </span>-S<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">        </span>-nographic<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">        </span>-kernel<span class="w"> </span><span class="k">$(</span>bzImage<span class="k">)</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">        </span>-append<span class="w"> </span><span class="s2">&quot;nokaslr console=ttyS0&quot;</span>
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="nf">gdb</span><span class="o">:</span><span class="w"> </span><span class="n">vmlinux</span>-<span class="n">gdb</span>.<span class="n">py</span>
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">    </span>gdb<span class="w"> </span><span class="k">$(</span>vmlinux<span class="k">)</span><span class="w"> </span>-x<span class="w"> </span>gdbinit
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>
+<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="nf">vmlinux-gdb.py</span><span class="o">:</span>
+<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="w">    </span>ln<span class="w"> </span>-s<span class="w"> </span><span class="k">$(</span>KERNEL_DIR<span class="k">)</span>/scripts/gdb/vmlinux-gdb.py<span class="w"> </span>.
+</code></pre></div>
+<p>Make sure to update the <code>KERNEL_DIR</code> variable to the path of your kernel source
+tree.</p>
+<p>The <code>gdbinit</code> file contains the following commands:</p>
+<div class="language-text highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>define hook-quit
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    kill
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>end
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>target remote localhost:1234
+</code></pre></div>
+<p>You can now use <code>make qemu</code> to start the QEMU instance and execute <code>make gdb</code> in
+another terminal to attach GDB to the QEMU instance. When GDB is launched, it
+will execute the commands specified in the <code>gdbinit</code>. These commands include a
+hook to terminate QEMU when GDB is exited and establish a connection between GDB
+and the QEMU instance.</p>
+<p>Should you encounter a warning indicating "auto-loading has been declined," it
+suggests that the script <code>vmlinux-gdb.py</code> provided by the kernel was not loaded
+successfully. This script offers a range of commands to streamline kernel
+debugging. For more information regarding this script, please refer to <a href="https://www.kernel.org/doc/html/v6.7/dev-tools/gdb-kernel-debugging.html">this
+page</a>.</p>
+<p>Follow the instructions provided in the warning message to resolve the warning.</p>
+<h2 id="drawing-a-call-graph">Drawing a Call Graph</h2>
+<p>To gain a better understanding of how things work, we can create a call graph
+for a specific function of interest.</p>
+<p>For instance, if we want to understand how the <code>__schedule</code> function is invoked,
+we can follow these steps:</p>
+<ol>
+<li>Launch the kernel and attach GDB to it as described previously.</li>
+<li>Set a breakpoint at the beginning of the <code>__schedule</code> function.</li>
+<li>Execute the <code>continue</code> command to allow the kernel to run.</li>
+<li>When the breakpoint is hit, execute the <code>bt</code> command to print the call stack,
+   revealing the call path to the <code>__schedule</code> function.</li>
+<li>Repeat the process several times to collect multiple call paths to the
+   <code>__schedule</code> function.</li>
+<li>Use a Python script to parse the collected call paths.</li>
+</ol>
+<p>Here are some helpful tips:</p>
+<ul>
+<li>Use the
+  <a href="https://sourceware.org/gdb/current/onlinedocs/gdb.html/Logging-Output.html">"logging"</a>
+  feature of GDB to dump the outputs to a file.</li>
+<li>Define a
+  <a href="https://sourceware.org/gdb/current/onlinedocs/gdb.html/Hooks.html">"hook"</a> in
+  GDB so that it automatically executes the <code>backtrace</code> command when the
+  breakpoint is hit.</li>
+</ul>
+<p>Then by setting the breakpoint and repeating the <code>continue</code> command, you can
+collect the call paths. Once the call paths are collected, you can use a Python
+script to parse them.</p>
+<script src="https://gist.github.com/shen-jiamin/62e554df61510efe7095ad8335e1346b.js?file=draw-call-graph.py"></script>
+
+<p>The provided Python script prints a dot script. You can use
+<a href="https://graphviz.org/">Graphviz</a> to generate the diagram from the dot script
+using the following command:</p>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>python3<span class="w"> </span>draw-call-graph.py<span class="w"> </span>gdb.__schedule.txt<span class="w"> </span><span class="p">|</span><span class="w"> </span>dot<span class="w"> </span>-Tsvg<span class="w"> </span>-o<span class="w"> </span>schedule.svg
+</code></pre></div>
+<p>You can replace the <code>svg</code> in the command with other formats such as <code>png</code> or
+<code>pdf</code> to generate the diagram in different formats. Additionally, feel free to
+modify the provided script to meet your specific requirements, or explore
+alternative methods to generate the call graph.</p>
+<p>Here's an example of the call graph for the <code>__schedule</code> function:</p>
+<p><img alt="__schedule call graph" src="../schedule-call-graph.svg" /></p>
+<div class="admonition question">
+<p class="admonition-title">Question</p>
+<p>Please create a call graph illustrating the invocation of the
+<a href="https://elixir.bootlin.com/linux/v6.7/source/kernel/sched/fair.c#L5114"><code>place_entity</code></a>
+function.</p>
+<p>Ensure the diagram is generated in <strong>PDF</strong> format and include it in
+your submission.</p>
+</div>
+<h2 id="inspecting-the-fair-scheduler">Inspecting the Fair Scheduler</h2>
+<p>In this task, we will concentrate on a subset of methods utilized within the
+fair scheduler. These methods are as follows:</p>
+<div class="language-text highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>DEFINE_SCHED_CLASS(fair) = {
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>    .enqueue_task   = enqueue_task_fair,
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    .dequeue_task   = dequeue_task_fair,
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>    .yield_task     = yield_task_fair,
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>    .wakeup_preempt = check_preempt_wakeup_fair,
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>    .pick_next_task = __pick_next_task_fair,
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>    .put_prev_task  = put_prev_task_fair,
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>    .set_next_task  = set_next_task_fair,
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>    .task_tick      = task_tick_fair,
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>    .task_fork      = task_fork_fair,
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>};
+</code></pre></div>
+<p>This setup reflects an object-oriented programming approach in C.</p>
+<p>Please analyse the provided methods within the setup. Determine the
+functionality of each method and identify when they are typically called. You
+can consult with ChatGPT or
+<a href="https://docs.github.com/en/copilot/github-copilot-chat/about-github-copilot-chat#explaining-code-and-suggesting-improvements">Copilot</a>
+on this.</p>
+<p>After analysing the call graph generated in the previous part, it's evident that
+the <code>place_entity</code> function is invoked from 2/3 distinct paths:</p>
+<ol>
+<li><code>kernel_clone</code> →<ul>
+<li><code>copy_process</code> → <code>task_fork_fair</code> → <code>place_entity</code></li>
+<li><code>wake_up_new_task</code> → <code>activate_task</code> → <code>enqueue_task_fair</code> → <code>place_entity</code></li>
+</ul>
+</li>
+<li><code>try_to_wake_up</code> → <code>activate_task</code> → <code>enqueue_task_fair</code> → <code>place_entity</code></li>
+</ol>
+<p>Path 1 primarily deals with the creation of a new task, while Path 2 focuses on
+awakening a previously sleeping task.</p>
+<p>Please review the source code of <code>place_entity</code> to discern how it behaves
+differently between the two types of incoming tasks during placement.</p>
+<div class="admonition question">
+<p class="admonition-title">Question</p>
+<p>Please provide a brief explanation of the differences in the behaviour of
+<code>place_entity</code> between the two types of incoming tasks.</p>
+</div>
+<p>Another observation is that <code>place_entity</code> is called twice for each new task
+created. Is this a bug or a feature? Please provide a brief explanation.</p>
+<p>Hint:</p>
+<ul>
+<li>Use the techniques we've covered to help figure out the behaviour.</li>
+<li>When you use GDB to debug the kernel, you can use <code>$lx_current()</code> to get the
+  current task and <code>$lx_per_cpu("runqueues")</code> to get the runqueues. These are
+  useful helpers provided by the <code>vmlinux-gdb.py</code> script.</li>
+</ul>
+<div class="admonition question">
+<p class="admonition-title">Question</p>
+<p>Is calling <code>place_entity</code> twice for each new task created a bug or a feature?
+Please provide a brief explanation.</p>
+</div>
+<p>Hint: <a href="https://lore.kernel.org/all/20231023154319.102437-1-daniel.m.jordan@oracle.com/T/#u">https://lore.kernel.org/all/20231023154319.102437-1-daniel.m.jordan@oracle.com/T/#u</a></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.copy", "content.code.select", "navigation.indexes", "navigation.sections", "navigation.tabs", "toc.integrate"], "search": "../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.3220b9d7.min.js"></script>
+      
+        <script src="../../javascripts/open_in_new_tab.js"></script>
+      
+    
+  </body>
+</html>
